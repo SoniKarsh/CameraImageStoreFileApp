@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">CameraFileAppDemo</string>
+    <string name="take_a_snap">Take A Snap</string>
+</resources>
