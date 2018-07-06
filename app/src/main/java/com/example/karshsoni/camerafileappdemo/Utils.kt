@@ -5,7 +5,10 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Environment
+import android.provider.MediaStore
+import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.FileProvider
 import android.util.Log
 import android.widget.Toast
 import java.io.File
@@ -16,6 +19,8 @@ class Utils{
 
     companion object {
 
+        var imageFile : File? = null
+
         fun notifyGalleryAboutPic(context: Context, imagePath: String){
             val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
             var file = File(imagePath)
@@ -24,7 +29,7 @@ class Utils{
             context.sendBroadcast(intent)
         }
 
-        fun createImageFile(): File {
+        fun createImageFile(): File? {
 
             // .nomedia folder will not let any other android specific app to show our media files in their apps
 
@@ -41,10 +46,16 @@ class Utils{
                 Log.d("Folder", "createImageFile: Folder Created")
             }
 
-            val imageFile = File(folderCreate,
+            imageFile = File(folderCreate,
                     "$imageFileName.jpg")
 
-            return imageFile
+            var size = (storageDir.freeSpace.toDouble() * 0.000001)
+
+            if (size < 100) {
+                return null
+            } else {
+                return imageFile as File
+            }
 
         }
 
